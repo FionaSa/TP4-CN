@@ -1,6 +1,7 @@
 exec('./functions/ldlt.sci')
-exec('./functions/ldlt2.sci')
-exec('./functions/ldlt3.sci')
+exec('./functions/mylu.sci')
+//exec('./functions/ldlt2.sci')
+//exec('./functions/ldlt3.sci')
 //A = rand(3,3)
 //A = sparse(A)
 
@@ -10,25 +11,77 @@ A =[9,-1,2;-1,8,-5;2,-5,7]
 disp('A est donc')
 disp(A)
 
-[L,U] = lu(A)
-[A2,L2] = ldlt(A) 
-//disp('AOK')
-//disp(A)
-//[A3,L3] = ldlt2(A) 
-//[A4,L4] = ldlt3(A) 
-disp('L=')
-disp(L)
-disp('L2 = ')
-disp(L2)
+n = 3
+avg = 0
+avg_toc = 0
+for j=1 : 10
+    A = toeplitz(rand(n,1))
+    [L,U] = lu(A)
+    tic()
+    [L2,D] = ldlt(A) 
+    avg_toc = avg_toc + toc()
+    Dt = zeros(n,n)
+    for i = 1 : n
+        Dt(i,i) = D(i)
+    end
+    avg = avg +norm(A-((L2)*(Dt)*L2'))
+    
+end
+disp(avg/10)
+disp(avg_toc/10)
+n = 5
+avg = 0
+avg_toc = 0
+for j=1 : 10
+    A = toeplitz(rand(n,1))
+    [L,U] = lu(A)
+    tic()
+    [L2,D] = ldlt(A) 
+    avg_toc = avg_toc + toc()
+    Dt = zeros(n,n)
+   // disp(D)
+    for i = 1 : n
+        Dt(i,i) = D(i)
+    end
+    avg = avg +norm(A-((L2)*(Dt)*L2'))
+    
+end
+disp(avg/10)
+disp(avg_toc/10)
 
-disp(A-((tril(A2,-1)+eye(A2))*(tril(A2,-1)-tril(A2,-1)')*tril(A2)'))
-disp('L4 = ')
-/*disp(L4)
-disp(A-((tril(A4,-1)+eye(A4))*(tril(A4,-1)-tril(A4,-1)')*tril(A4)'))
-//disp('L3 = ')
-//disp(L3)
-disp('A2 = ')
-disp(A2)
-disp('A4 = ')
-disp(A4)
+n = 10
+avg = 0
+avg_toc = 0
+for j=1 : 10
+    A = toeplitz(rand(n,1))
+    [L,U] = lu(A)
+    tic()
+    [L2,D] = ldlt(A) 
+    avg_toc = avg_toc + toc()
+    Dt = zeros(n,n)
+    for i = 1 : n
+        Dt(i,i) = D(i)
+    end
+    avg = avg +norm(A-((L2)*(Dt)*L2'))
+    
+end
+disp(avg/10)
+disp(avg_toc/10)
 
+n = 100
+avg = 0
+avg_toc = 0
+for j=1 : 10
+    A = toeplitz(rand(n,1))
+    [L,U] = lu(A)
+    tic()
+    [L2,D] = ldlt(A) 
+    avg_toc = avg_toc + toc()
+    Dt = zeros(n,n)
+    for i = 1 : n
+        Dt(i,i) = D(i)
+    end
+    avg = avg +norm(A-((L2)*(Dt)*L2'))
+end
+disp(avg/10)
+disp(avg_toc/10)
