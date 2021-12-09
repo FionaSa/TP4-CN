@@ -10,6 +10,11 @@
 #include <limits.h>
 #include "blaslapack_headers.h"
 
+// la = number of elements in input vector(s) N is INTEGER The number of linear equations, i.e., the order of the matrix A.  N >= 0.
+// LDAB is INTEGER The leading dimension of the array AB.  LDAB >= 2*KL+KU+1.
+// kv = minimum à 1 (lapack) (DGBTRF) multiplication matrix kv = 0
+
+
 void set_GB_operator_rowMajor_poisson1D(double* AB, int* lab, int *la);
 void set_GB_operator_colMajor_poisson1D(double* AB, int* lab, int *la, int *kv);
 void set_GB_operator_colMajor_poisson1D_Id(double* AB, int* lab, int *la, int *kv);

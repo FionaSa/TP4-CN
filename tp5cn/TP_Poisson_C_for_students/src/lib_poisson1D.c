@@ -6,8 +6,24 @@
 #include "lib_poisson1D.h"
 
 void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
+  int ii, jj , kk ;
 
-  //TODO
+  //On parcours ldab donc leading dimension càd row
+  for ( ii = 0; ii <(*la) ; ii++ )
+  {
+    //On calcule la longueur d'une ligne 
+    //kk = jj*(*la);
+
+    AB[(1*(*la))+ii]=-1.0;
+    AB[(2*(*la))+ii]=2.0;
+    AB[(3*(*la))+ii]=-1.0;
+
+  }
+
+  AB[0]=0.0;
+
+  AB[(4)*(*la)-1]=0.0;
+
 }
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
   int ii, jj, kk;
@@ -15,7 +31,7 @@ void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
     kk = jj*(*lab);
     if (*kv>=0){
       for (ii=0;ii< *kv;ii++){
-	AB[kk+ii]=0.0;
+	        AB[kk+ii]=0.0;
       }
     }
     AB[kk+ *kv]=-1.0;
