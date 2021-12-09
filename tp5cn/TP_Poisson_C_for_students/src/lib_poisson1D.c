@@ -108,7 +108,9 @@ void write_GB_operator_rowMajor_poisson1D(double* AB, int* lab, int* la, char* f
 }
 
 void write_GB_operator_colMajor_poisson1D(double* AB, int* lab, int* la, char* filename){
-  //TODO
+  
+  
+  
 }
 
 void write_vec(double* vec, int* la, char* filename){
