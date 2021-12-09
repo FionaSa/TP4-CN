@@ -108,7 +108,22 @@ void write_GB_operator_rowMajor_poisson1D(double* AB, int* lab, int* la, char* f
 }
 
 void write_GB_operator_colMajor_poisson1D(double* AB, int* lab, int* la, char* filename){
-  
+  FILE * file;
+  int ii,jj;
+  file = fopen(filename, "w");
+
+  if (file != NULL){
+    for (jj=0;jj<(*lab);jj++){
+      for (ii=0;ii<(*la);ii++){
+	      fprintf(file,"%lf\t",AB[ii*(*la)+jj]);
+      }
+      fprintf(file,"\n");
+    }
+    fclose(file);
+  }
+  else{
+    perror(filename);
+  }    
   
   
 }
