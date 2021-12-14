@@ -13,16 +13,26 @@ void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
   {
     //On calcule la longueur d'une ligne 
     //kk = jj*(*la);
+    if(*lab>3)
+    {
+      for ( jj = 0 ; jj < (*lab % 3) ; jj ++)
+            AB[(jj)*(*la)+ii]= 0;
+      
+        AB[(jj)*(*la)+ii]=-1.0;
+        AB[(jj+1)*(*la)+ii]=2.0;
+        AB[(jj+2)*(*la)+ii]=-1.0;        
 
-    AB[(1*(*la))+ii]=-1.0;
-    AB[(2*(*la))+ii]=2.0;
-    AB[(3*(*la))+ii]=-1.0;
+    }else {
+          AB[ii]=-1.0;
+        AB[(1*(*la))+ii]=2.0;
+        AB[(2*(*la))+ii]=-1.0;
+    } 
 
   }
 
   AB[0]=0.0;
 
-  AB[(4)*(*la)-1]=0.0;
+  AB[(3)*(*la)-1]=0.0;
 
 }
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){

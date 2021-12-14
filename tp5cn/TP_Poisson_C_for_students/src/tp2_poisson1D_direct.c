@@ -52,14 +52,17 @@ int main(int argc,char *argv[])
   /* working array for pivot used by LU Factorization */
   ipiv = (int *) calloc(la, sizeof(int));
 
-  int row = 0; //
+  int row = 1; //
 
   if (row == 1){ // LAPACK_ROW_MAJOR
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
-    //write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
-    
+
     info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS);
-  
+    
+    write_GB_operator_rowMajor_poisson1D(RHS, &lab, &la, "AB_row.dat");
+
+   printf("\n PIVOT %d\n",ipiv);
+ 
   } 
   else { // LAPACK_COL_MAJOR
     set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
@@ -82,6 +85,28 @@ int main(int argc,char *argv[])
   relres = relres / temp;
   
   printf("\nThe relative residual error is relres = %e\n",relres);
+
+
+
+  // DGBMV
+
+  if (row == 1){ // LAPACK_ROW_MAJOR
+    set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
+
+    info = LAPACKE_dgbmv(LAPACK_ROW_MAJOR,);
+    
+    write_GB_operator_rowMajor_poisson1D(RHS, &lab, &la, "AB_row.dat");
+
+   printf("\n PIVOT %d\n",ipiv);
+ 
+  } 
+  else { // LAPACK_COL_MAJOR
+    set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
+    //write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
+
+    info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
+  }    
+
 
   free(RHS);
   free(EX_SOL);
