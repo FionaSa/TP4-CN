@@ -15,7 +15,8 @@
 // kv = minimum à 1 (lapack) (DGBTRF) multiplication matrix kv = 0
 // DGBMV code à part car kv = 0 
 // A *lhs = rhs
-
+//incx et incy = saut mémoire d'un élément à l'autre ( inc 1 ou NRHS)
+// incy = nrhs 
 
 void set_GB_operator_rowMajor_poisson1D(double* AB, int* lab, int *la);
 void set_GB_operator_colMajor_poisson1D(double* AB, int* lab, int *la, int *kv);
@@ -32,3 +33,5 @@ double eigmax_poisson1D(int *la);
 double eigmin_poisson1D(int *la);
 double richardson_alpha_opt(int *la);
 void richardson_alpha(double *AB, double *RHS, double *X, double *alpha_rich, int *lab, int *la,int *ku, int*kl, double *tol, int *maxit);
+
+void set_dense_RHS_x_1D(double* RHS, int* la, double x);

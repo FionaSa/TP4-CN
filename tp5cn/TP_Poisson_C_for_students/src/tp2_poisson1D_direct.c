@@ -52,14 +52,17 @@ int main(int argc,char *argv[])
   /* working array for pivot used by LU Factorization */
   ipiv = (int *) calloc(la, sizeof(int));
 
-  int row = 1; //
+  int row = 0; //
 
   if (row == 1){ // LAPACK_ROW_MAJOR
+  //lab = 3;
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
+    write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
+    write_GB_operator_rowMajor_poisson1D(RHS, &lab, &la, "B_row.dat");
 
     info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS);
     
-    write_GB_operator_rowMajor_poisson1D(RHS, &lab, &la, "AB_row.dat");
+    write_GB_operator_rowMajor_poisson1D(RHS, &lab, &la, "AB*x_row.dat");
 
    printf("\n PIVOT %d\n",ipiv);
  
@@ -67,8 +70,11 @@ int main(int argc,char *argv[])
   else { // LAPACK_COL_MAJOR
     set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
     //write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
+    write_GB_operator_colMajor_poisson1D(RHS, &lab, &la, "B_col.dat");
 
     info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
+        write_GB_operator_colMajor_poisson1D(RHS, &lab, &la, "DGBSV_col.dat");
+
   }    
 
   
@@ -89,22 +95,49 @@ int main(int argc,char *argv[])
 
 
   // DGBMV
+  
+
+   // set_dense_RHS_DBC_1D(RHS,&la,&T0,&T1);
+
 
   if (row == 1){ // LAPACK_ROW_MAJOR
-    set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
+    //set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
+    /*kv = 0;
+  lab = 3;*/
+      set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
 
-    info = LAPACKE_dgbmv(LAPACK_ROW_MAJOR,);
+    //set_dense_RHS_DBC_1D(RHS,&la,&T0,&T1);
+          set_dense_RHS_x_1D(RHS,&la,1);
+      set_dense_RHS_x_1D(EX_SOL,&la,0);
+    write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB-kv_row.dat");
+    /*
+      *
+      */
+    cblas_dgbmv(CblasRowMajor,111,lab,la,kl,ku,1.0,AB,la,RHS,1.0,0,EX_SOL,NRHS);
     
-    write_GB_operator_rowMajor_poisson1D(RHS, &lab, &la, "AB_row.dat");
+    write_GB_operator_rowMajor_poisson1D(EX_SOL, &lab, &la, "DGBMV_row.dat");
 
-   printf("\n PIVOT %d\n",ipiv);
  
   } 
   else { // LAPACK_COL_MAJOR
-    set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
-    //write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
+  kv = 0;
+  lab = 3;
+   set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
+    set_dense_RHS_DBC_1D(RHS,&la,&T0,&T1);
+    set_analytical_solution_DBC_1D(EX_SOL, X, &la, &T0, &T1);
 
-    info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
+
+    write_vec(EX_SOL, &la, "EX_SOL_dgbvm.dat");
+
+    //write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
+    // cblas_dgbmv(layout,111,
+    write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB-kv_col.dat");
+    write_vec(RHS, &la, "B_dgbvm.dat");
+
+    cblas_dgbmv(CblasColMajor,111,la,lab,kl,ku,-1.0,AB,la,EX_SOL,1.0,1.0,RHS,1.0);
+    write_vec(RHS, &la, "RHS_dgbvm.dat");
+
+   // info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
   }    
 
 

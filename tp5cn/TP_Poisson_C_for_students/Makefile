@@ -46,6 +46,11 @@ tp2poisson1D_iter: bin/tp2poisson1D_iter
 
 tp2poisson1D_direct: bin/tp2poisson1D_direct
 
+
+tp2_dgvm.o: $(TPDIRSRC)/tp2_dgvm.c
+	$(CC) $(OPTC) -c $(INCL) $(TPDIRSRC)/tp2_dgvm.c  
+
+
 tp_env.o: $(TPDIRSRC)/tp_env.c
 	$(CC) $(OPTC) -c $(INCL) $(TPDIRSRC)/tp_env.c 
 

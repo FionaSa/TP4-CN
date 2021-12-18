@@ -20,19 +20,24 @@ void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
       
         AB[(jj)*(*la)+ii]=-1.0;
         AB[(jj+1)*(*la)+ii]=2.0;
-        AB[(jj+2)*(*la)+ii]=-1.0;        
+        AB[(jj+2)*(*la)+ii]=-1.0;  
+
+        AB[jj*(*la)]=0.0;
+
+        AB[(jj+3)*(*la)-1]=0.0;      
 
     }else {
           AB[ii]=-1.0;
         AB[(1*(*la))+ii]=2.0;
-        AB[(2*(*la))+ii]=-1.0;
+        AB[(2*(*la))+ii]=-1.0;  
+        AB[0]=0.0;
+
+        AB[(3)*(*la)-1]=0.0;
     } 
 
   }
 
-  AB[0]=0.0;
 
-  AB[(3)*(*la)-1]=0.0;
 
 }
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
@@ -80,6 +85,14 @@ void set_dense_RHS_DBC_1D(double* RHS, int* la, double* BC0, double* BC1){
   }
 }  
 
+void set_dense_RHS_x_1D(double* RHS, int* la, double x)
+{
+  int jj;
+  for (jj=0;jj<(*la);jj++){
+    RHS[jj]=x;
+  }
+}  
+
 void set_analytical_solution_DBC_1D(double* EX_SOL, double* X, int* la, double* BC0, double* BC1){
   int jj;
   double h, DELTA_T;
@@ -123,9 +136,9 @@ void write_GB_operator_colMajor_poisson1D(double* AB, int* lab, int* la, char* f
   file = fopen(filename, "w");
 
   if (file != NULL){
-    for (jj=0;jj<(*lab);jj++){
-      for (ii=0;ii<(*la);ii++){
-	      fprintf(file,"%lf\t",AB[ii*(*la)+jj]);
+    for (jj=0;jj<(*la);jj++){
+      for (ii=0;ii<(*lab);ii++){
+	      fprintf(file,"%lf\t",AB[jj*(*lab)+ii]);
       }
       fprintf(file,"\n");
     }
