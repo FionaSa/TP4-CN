@@ -1,16 +1,16 @@
-function [x]=jacobi(A)
-    [n,n] = A
-    x = zeros(n,1)
-    D = diag(A)
+function [x] = jacobi(A,b)
+    [n,n] = size(A)
     
-    b = rand(n,1)
+    x= zeros(n,1)
     
-    D = D'
+    epsilon = 1.e-10
     
-    x(1)= A\b
     
-    for i = 1:n
-        x(i+1) = 1/A(i,i)*(b(i) - A(i,1:n)*x(1:n)
-    end
+   while (norm(b-A*x)>epsilon)
+        for i = 1:n
+             x(i) = -(1/A(i,i))*( ( A(i,1:n)*x )-(A(i,i)*x(i)))+(b(i)/A(i,i))
+
+        end
+   end    
     
 endfunction
