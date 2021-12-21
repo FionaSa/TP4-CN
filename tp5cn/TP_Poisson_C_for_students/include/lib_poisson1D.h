@@ -34,4 +34,8 @@ double eigmin_poisson1D(int *la);
 double richardson_alpha_opt(int *la);
 void richardson_alpha(double *AB, double *RHS, double *X, double *alpha_rich, int *lab, int *la,int *ku, int*kl, double *tol, int *maxit);
 
+void mylu_rowMajor(double *AB, int* lab, int *la);
+void mylu_colMajor(double* AB, int* lab, int *la, int *kv);
+
+
 void set_dense_RHS_x_1D(double* RHS, int* la, double x);

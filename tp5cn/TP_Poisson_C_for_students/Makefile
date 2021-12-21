@@ -36,15 +36,19 @@ INCL= -I $(TPDIR)/include $(INCLBLASLAPACK)
 OBJENV= tp_env.o
 OBJTP2ITER= lib_poisson1D.o tp2_poisson1D_iter.o
 OBJTP2DIRECT= lib_poisson1D.o tp2_poisson1D_direct.o
+OBJTP2LU = lib_poisson1D.o tp2_lu.o
 #
 
-all: bin/tp_testenv bin/tp2poisson1D_iter bin/tp2poisson1D_direct
+all: bin/tp_testenv bin/tp2poisson1D_iter bin/tp2poisson1D_direct bin/tp2lu
 
 testenv: bin/tp_testenv
 
 tp2poisson1D_iter: bin/tp2poisson1D_iter
 
 tp2poisson1D_direct: bin/tp2poisson1D_direct
+
+tp2_lu.o: $(TPDIRSRC)/tp2_lu.c
+	$(CC) $(OPTC) -c $(INCL) $(TPDIRSRC)/tp2_lu.c  
 
 
 tp2_dgvm.o: $(TPDIRSRC)/tp2_dgvm.c
@@ -62,6 +66,9 @@ tp2_poisson1D_iter.o: $(TPDIRSRC)/tp2_poisson1D_iter.c
 
 tp2_poisson1D_direct.o: $(TPDIRSRC)/tp2_poisson1D_direct.c
 	$(CC) $(OPTC) -c $(INCL) $(TPDIRSRC)/tp2_poisson1D_direct.c  
+
+bin/tp2lu: $(OBJTP2LU)
+	$(CC) -o bin/tp2_lu $(OPTC) $(OBJTP2LU) $(LIBS)
 
 bin/tp_testenv: $(OBJENV) 
 	$(CC) -o bin/tp_testenv $(OPTC) $(OBJENV) $(LIBS)

@@ -214,3 +214,75 @@ double richardson_alpha_opt(int *la){
 void richardson_alpha(double *AB, double *RHS, double *X, double *alpha_rich, int *lab, int *la,int *ku, int*kl, double *tol, int *maxit){
   //TODO
 }
+void mylu_rowMajor(double *AB, int* lab, int *la){
+
+   int ii, jj , kk ;
+
+   jj = *lab%3;
+
+   //Cas 0
+    if(*lab>3)
+    {  
+
+                                            //A reste le même
+                                            //B reste le même
+        AB[(jj+2)*(*la)]/=AB[(jj+1)*(*la)]; //C = c/b
+
+    }else {
+
+        AB[(2*(*la))]/=AB[(1*(*la))];  
+    }  
+
+  //On parcours ldab donc leading dimension càd row
+  for ( ii = 1; ii <(*la) ; ii++ )
+  {
+    //On calcule la longueur d'une ligne 
+    //kk = jj*(*la);
+    if(*lab>3)
+    {    
+                                                              //A reste le même
+        AB[(jj+1)*(*la)+ii]-=AB[(jj)*(*la)+ii]*AB[(jj+2)*(*la)+(ii-1)]; //Bk = Bk - Ak * Ck-1 
+        AB[(jj+2)*(*la)+ii]/=AB[(jj+1)*(*la)+ii]; //Ck = Ck/Bk
+
+    }else {
+          AB[ii]=-1.0;
+        AB[(1*(*la))+ii]-=AB[ii]*AB[(2*(*la))+(ii-1)];
+        AB[(2*(*la))+ii]/=AB[(1*(*la))+ii];
+
+    } 
+
+  }
+}
+
+void mylu_colMajor(double* AB, int *lab, int *la, int *kv){
+  int ii, jj, kk,k1 = 3;
+
+
+    if (*kv>=0){
+      k1 = 4;
+      for (ii=0;ii< *kv;ii++){
+	        AB[ii]=0.0;
+      }
+    }
+    AB[*kv+2]/=AB[ *kv+1];
+  
+
+  for (jj=1;jj<(*la);jj++){
+    kk = jj*(*lab);
+    if (*kv>=0){
+      for (ii=0;ii< *kv;ii++){
+	        AB[kk+ii]=0.0;
+      }
+    }
+
+    printf("kv+2 = %lf\n",AB[(kk-3)+ *kv+2]);
+
+    AB[kk+ *kv+1]-=AB[kk+ *kv]*AB[(kk-k1)+ *kv+2];
+    AB[kk+ *kv+2]/=AB[kk+ *kv+1];
+  }
+
+}  
+
+
+ 
+
