@@ -25,14 +25,14 @@ b = rand(5,1)
 
 xex = A\b
  
-x = jacobi(A,b)
+[x,sp] = jacobi(A,b)
 
- 
 //x2 = jacobi2(A,b)
 
 disp(A)
 disp(xex)
 disp(x)
+disp(sp)
 //disp(x2)
 
 //disp(B)
