@@ -101,10 +101,12 @@ int main(int argc,char *argv[])
 
 
   if (row == 1){ // LAPACK_ROW_MAJOR
-    //set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
-    /*kv = 0;
-  lab = 3;*/
-      set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
+  kv = 0;
+  lab = 3;
+   set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
+    set_dense_RHS_DBC_1D(RHS,&la,&T0,&T1);
+    set_analytical_solution_DBC_1D(EX_SOL, X, &la, &T0, &T1);
+
 
     //set_dense_RHS_DBC_1D(RHS,&la,&T0,&T1);
           set_dense_RHS_x_1D(RHS,&la,1);
@@ -113,9 +115,9 @@ int main(int argc,char *argv[])
     /*
       *
       */
-    cblas_dgbmv(CblasRowMajor,111,lab,la,kl,ku,1.0,AB,la,RHS,1.0,0,EX_SOL,NRHS);
+    cblas_dgbmv(CblasRowMajor,113,la,lab,kl,ku,-1.0,AB,la,EX_SOL,1.0,1.0,RHS,1.0);
     
-    write_GB_operator_rowMajor_poisson1D(EX_SOL, &lab, &la, "DGBMV_row.dat");
+    write_GB_operator_rowMajor_poisson1D(RHS, &lab, &la, "DGBMV_row.dat");
 
  
   } 
@@ -134,8 +136,8 @@ int main(int argc,char *argv[])
     write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB-kv_col.dat");
     write_vec(RHS, &la, "B_dgbvm.dat");
 
-    cblas_dgbmv(CblasColMajor,111,la,lab,kl,ku,-1.0,AB,la,EX_SOL,1.0,1.0,RHS,1.0);
-    write_vec(RHS, &la, "RHS_dgbvm.dat");
+    cblas_dgbmv(CblasColMajor,111,la,lab,kl,ku,1.0,AB,lab,EX_SOL,1.0,-1.0,RHS,1.0);
+    write_vec(RHS, &la, "B-1A1_dgbvm.dat");
 
    // info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
   }    

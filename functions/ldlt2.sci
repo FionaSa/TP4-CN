@@ -2,14 +2,9 @@ function [A]=ldlt2(A)
     [n,n] = size(A)
     
     v(1) = A(1,1)*A(1,1)
-   // A(1,1) = A(1,1) - A(1,1)*v(1)
-   //A(2:n,1) = (A(2:n,1) -A(2:n,1) * v(1))/A(1,1)  
+
     A(2:n,1) = (A(2:n,1))/A(1,1)    
-   // disp('Matrice = ')
-    //disp(A)
-  //  for i = 2:n
-    //    A(1,1) = (A(i,1) -A(i,1) * v(1))/A(1,1)           
-    //end
+
 
     for j = 2: n
         for i = 1 : j-1

@@ -10,8 +10,7 @@ function [x,sp] = richardson(A,b)
          
    while (norm(b-A*x)>epsilon)
              for i = 1:n
-                 C = (A(i,i)*x(i))
-                 x(i) = x(i) + (1/A(i,i))*(b(i)-( ( A(i,1:n)*x )- C))
+                 x(i) = x(i) + (1/A(i,i))*(b(i)-( A(i,1:n)*x ))
             end
    end    
     

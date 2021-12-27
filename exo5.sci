@@ -8,6 +8,7 @@ v=[2 2 2]
 
 B = CSRMatVec(AA,JA,IA,v)
 disp(size(IA,'c'))
+disp('----')
 disp(B)
 /*
 AA=[1 2 3 4 5 6 7 8 9 10 11 12]

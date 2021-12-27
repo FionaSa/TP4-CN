@@ -8,7 +8,8 @@ function [x,sp] = jacobi(A,b)
      N = M-A
      B = inv(M)* N
      
-     sp = max(abs(spec(B)))
+     sp = []
+    // sp = max(abs(spec(B)))
    while (norm(b-A*x)>epsilon)
 
              for i = 1:n
